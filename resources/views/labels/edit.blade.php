@@ -1,32 +1,20 @@
-@extends('layout');
+@extends('layout')
 
 @section('content')
-    <h2>Label bearbeiten</h2>
-
-    <form class="row" action="/labels/{{$label->id}}" method="post">
-        @csrf
-        @method('PUT')
-
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label for="name">Label Name</label>
-                <input class="form-control" type="text" name="title" id="title" value="{{$label->name}}">
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label for="label">Label</label>
-                <select class="form-select" name="label_id" id="label" >
-                    @foreach ($labels as $label)
-                        <option @if ($label->id ===$song->label_id) selected @endif value="{{$label->id}}">{{$label->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="mt-5">
-                <button class="btn btn-success" type="submit">Änderung Speichern</button>
-            </div>
-        </div>
-
-    </form>
-@endsection 
+<h1>Label bearbeiten</h1>
+<form action="{{ route('labels.update', $label->id) }}" method="POST" class="d-flex flex-column">
+    @csrf
+    @method('PUT')
+    <div class="mb-3">
+        <label for="name" class="form-label">Label Name</label>
+        <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $label->name) }}" required>
+        @error('name')
+        <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+    <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-success">Label speichern</button>
+        <a href="{{ route('labels.index') }}" class="btn btn-secondary">Zurück</a>
+    </div>
+</form>
+@endsection

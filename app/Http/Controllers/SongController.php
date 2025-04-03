@@ -19,16 +19,16 @@ class SongController extends Controller
             ->orderBy('songs.title', 'asc')
             ->get();
 
-        return view('songs.index', ['songs'=>$songs]);
+        return view('songs.index', ['songs' => $songs]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {   
-        $labels = DB::table('labels')->select('id','name')->get();
-        return view('songs.create',['labels'=>$labels]);
+    {
+        $labels = DB::table('labels')->select('id', 'name')->get();
+        return view('songs.create', ['labels' => $labels]);
     }
 
     /**
@@ -37,16 +37,16 @@ class SongController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title'=>'required|min:3',
-            'band'=> 'required|min:2',
-            'label_id'=>'required'
+            'title' => 'required|min:3',
+            'band' => 'required|min:2',
+            'label_id' => 'required|exists:labels,id'
         ]);
 
         $song = new Song();
-        $song ->title = $validatedData['title'];
-        $song ->band = $validatedData['band'];
-        $song ->label_id = $validatedData['label_id'];
-        $song ->save();
+        $song->title = $validatedData['title'];
+        $song->band = $validatedData['band'];
+        $song->label_id = $validatedData['label_id'];
+        $song->save();
 
         return redirect('/songs');
     }
@@ -58,8 +58,8 @@ class SongController extends Controller
     {
         //$song = Song::find($id);
         $song = Song::join('labels', 'label_id', '=', 'labels.id')
-            ->select('songs.title', 'songs.band','songs.created_at','songs.updated_at', 'labels.name')
-            ->where('songs.id', '=' ,$id)
+            ->select('songs.title', 'songs.band', 'songs.created_at', 'songs.updated_at', 'labels.name')
+            ->where('songs.id', '=', $id)
             ->firstOrFail();
         return view('songs.show', compact('song'));
     }
@@ -70,10 +70,10 @@ class SongController extends Controller
     public function edit(string $id)
     {
         $song = Song::find($id);
-        $labels = DB::table('labels')->select('id','name')->get();
+        $labels = DB::table('labels')->select('id', 'name')->get();
         return view('songs.edit', [
-            'song'=> $song,
-            'labels'=> $labels
+            'song' => $song,
+            'labels' => $labels
         ]);
     }
 
@@ -85,14 +85,14 @@ class SongController extends Controller
         $song = Song::find($id);
 
         $validatedData = $request->validate([
-            'title'=> 'required|min:3',
-            'band'=> 'required|min:2',
-            'label_id'=> 'required',
+            'title' => 'required|min:3',
+            'band' => 'required|min:2',
+            'label_id' => 'required',
         ]);
 
-        $song->title=$validatedData['title'];
-        $song->band=$validatedData['band'];
-        $song->label_id=$validatedData['label_id'];
+        $song->title = $validatedData['title'];
+        $song->band = $validatedData['band'];
+        $song->label_id = $validatedData['label_id'];
 
         $song->save();
 
@@ -107,6 +107,5 @@ class SongController extends Controller
         $song = Song::find($id);
         $song->delete();
         return redirect('songs');
-
     }
 }
