@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Song;
+use App\Models\Label;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LabelController extends Controller
 {
@@ -11,7 +14,13 @@ class LabelController extends Controller
      */
     public function index()
     {
-        //
+        $labels = Label::all();
+        //  $labels = Song::join('labels', 'label_id', '=', 'labels.id')
+        //  ->select('songs.title', 'songs.band')
+        //  ->orderBy('songs.band', 'asc')
+        //  ->get();
+
+     return view('labels.index', ['labels'=>$labels]);
     }
 
     /**
@@ -19,7 +28,8 @@ class LabelController extends Controller
      */
     public function create()
     {
-        //
+        $labels = DB::table('labels')->select('id','name')->get();
+        return view('labels.create',['labels'=>$labels]);
     }
 
     /**
@@ -27,7 +37,17 @@ class LabelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name'=>'required|min:3',
+            'label_id'=>'required'
+        ]);
+
+        $label = new Label();
+        $label ->name = $validatedData['name'];
+        $label ->label_id = $validatedData['label_id'];
+        $label ->save();
+
+        return redirect('/labels');
     }
 
     /**
@@ -35,7 +55,8 @@ class LabelController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $label = Label::find($id);
+        return view('labels.show',compact('label'));
     }
 
     /**
@@ -59,6 +80,8 @@ class LabelController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $label = Label::find($id);
+        $label->delete();
+        return redirect('labels');
     }
 }
