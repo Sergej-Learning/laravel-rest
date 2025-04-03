@@ -8,5 +8,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('songs', SongController::class);
-Route::resource('labes', LabelController::class);
+Route::resource('/songs', SongController::class);
+
+Route::resource('/labels', LabelController::class);
