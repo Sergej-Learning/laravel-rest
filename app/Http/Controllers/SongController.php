@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Song;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -104,8 +105,8 @@ class SongController extends Controller
      */
     public function destroy(string $id)
     {
-        $song = Song::find($id);
+        $song = Song::findOrFail($id);
         $song->delete();
-        return redirect('songs');
+        return redirect()->back()->with('sucess', 'Song wurde erfolgreich gelöscht!');
     }
 }
