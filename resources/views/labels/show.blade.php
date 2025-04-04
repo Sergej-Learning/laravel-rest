@@ -2,6 +2,12 @@
 
 @section('content')
 <h1>Label: {{ $label->name }}</h1>
+<p>
+    <small>
+        angelegt am : <i>{{$label->created_at->format('d.m.Y H:i')}}</i><br>
+        geändert am : <i>{{$label->updated_at->format('d.m.Y H:i')}}</i>
+    </small>
+</p>
 
 <h3>Zu diesem Label gehören folgende Songs:</h3>
 <div class="d-flex flex-wrap">
@@ -11,8 +17,8 @@
             <h5 class="card-title">{{ $song->title }} <br> von: {{ $song->band }}</h5>
             <p>
                 <small>
-                    angelegt am : <i>{{$song->created_at}}</i><br>
-                    geändert am : <i>{{$song->updated_at}}</i>
+                    angelegt am : <i>{{$song->created_at->format('d.m.Y H:i')}}</i><br>
+                    geändert am : <i>{{$song->updated_at->format('d.m.Y H:i')}}</i>
                 </small>
             </p>
             <form 

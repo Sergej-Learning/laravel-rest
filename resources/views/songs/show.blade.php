@@ -1,5 +1,7 @@
 @extends('layout')
 
+
+
 @section('content')
 <h2>{{ $song->title }}</h2>
 <p>
@@ -9,8 +11,8 @@
 </p>
 <p>
     <small>
-        angelegt am : <i>{{$song->created_at}}</i><br>
-        geändert am : <i>{{$song->updated_at}}</i>
+        angelegt am : <i>{{$song->created_at->format('d.m.Y H:i')}}</i><br>
+        geändert am : <i>{{$song->updated_at->format('d.m.Y H:i')}}</i>
     </small>
 </p>
 @endsection
